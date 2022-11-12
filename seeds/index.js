@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { courses } from './seedsHelper.js'
 import Course from '../models/course.js'
 
-mongoose.connect('mongodb://localhost:27017/hackumass-db');
+mongoose.connect('mongodb://127.0.0.1:27017/hackumass-db');
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));

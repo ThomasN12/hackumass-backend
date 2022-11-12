@@ -1,32 +1,32 @@
 export const courses = [
     {
         fullName: "PROGRAMMING WITH DATA STRUCTURES",
-        codeName: "COMPSCI 187",
+        codeName: "compsci187",
         major: "COMPUTER SCIENCE",
     },
     {
         fullName: "PROGRAMMING METHODOLOGY",
-        codeName: "COMPSCI 220",
+        codeName: "compsci220",
         major: "COMPUTER SCIENCE",
     },
     {
         fullName: "INTRODUCTION TO COMPUTATION",
-        codeName: "COMPSCI 250",
+        codeName: "compsci250",
         major: "COMPUTER SCIENCE",
     },
     {
         fullName: "INTRODUCTION TO COMPUTATION 2",
-        codeName: "COMPSCI 251",
+        codeName: "compsci251",
         major: "COMPUTER SCIENCE",
     },
     {
         fullName: "INTRODUCTION TO COMPUTATION 3",
-        codeName: "COMPSCI 252",
+        codeName: "compsci252",
         major: "COMPUTER SCIENCE",
     },
     {
         fullName: "INTRODUCTION TO COMPUTATION 4",
-        codeName: "COMPSCI 253",
+        codeName: "compsci253",
         major: "COMPUTER SCIENCE",
     },
 ]

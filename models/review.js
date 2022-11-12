@@ -18,11 +18,19 @@ const reviewSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 		},
-		upvote: {
+		difficultyRating: {
 			type: Number,
 			default: 0,
 		},
-		downvote: {
+		timeSpentRating: {
+			type: Number,
+			default: 0,
+		},
+		funRating: {
+			type: Number,
+			default: 0,
+		},
+		recommendRating: {
 			type: Number,
 			default: 0,
 		},

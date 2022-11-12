@@ -27,7 +27,7 @@ export const createAnswer = async (req, res, next) => {
 export const getAnswersByQuestion = async (req, res, next) => {
 	const { question } = req.query;
 	const answers = await Answer.find({ question });
-	res.status(200).json({ status: 200, message: "", data: answers });
+	res.status(200).json({ status: 200, message: "", data: answers || [] });
 };
 
 export const readAnswer = async (req, res, next) => {
@@ -40,33 +40,33 @@ export const readAnswer = async (req, res, next) => {
 };
 
 export const updateRating = async (req, res, next) => {
-	const { id, question, user, upvote, downvote } = req.params;
-	const answer = await Answer.find({ _id: id, question, user });
-	if (!answer) {
+	const { id, upvote, downvote } = req.body;
+	const answer = await Answer.find({ _id: id });
+	if (answer.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
 	await answer.updateOne({ upvote, downvote });
 	await answer.save();
-	res.status(200).json({ status: 200, message: "Answer rating updated", data: answer });
+	res.status(200).json({ status: 200, message: "Answer rating updated", data: answer[0] });
 };
 
 export const updateAnswer = async (req, res, next) => {
-	const { id, content, user, question } = req.body;
-	const answer = await Answer.find({ _id: id, user, question });
-	if (!answer) {
+	const { id, content } = req.body;
+	const answer = await Answer.find({ _id: id });
+	if (answer.length === 0) {
 		throw new ExpressError("Answer not found", 404);
 	}
 	await answer.updateOne({ content });
 	await answer.save();
-	res.status(200).json({ status: 200, message: "Answer updated", data: answerSchema });
+	res.status(200).json({ status: 200, message: "Answer updated", data: answer[0] });
 };
 
 export const deleteAnswer = async (req, res, next) => {
 	const { id } = req.body;
 	const answer = await Answer.findById(id);
-	if (!answer) {
+	if (answer.length === 0) {
 		throw new ExpressError("Answer not found", 404);
 	}
 	await answer.findByIdAndDelete(id);
-	res.status(200).json({ status: 200, message: "Answer deleted", data: answer });
+	res.status(200).json({ status: 200, message: "Answer deleted", data: answer});
 };

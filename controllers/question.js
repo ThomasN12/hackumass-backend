@@ -7,7 +7,7 @@ import { ExpressError } from "../utils/index.js";
 export const getQuestionsByCourse = async (req, res, next) => {
 	const { course } = req.query;
 	const questions = await Question.find({ course });
-	res.status(200).json({ status: 200, message: "", data: questions });
+	res.status(200).json({ status: 200, message: "", data: questions || [] });
 };
 
 export const createQuestion = async (req, res, next) => {
@@ -35,33 +35,33 @@ export const readQuestion = async (req, res, next) => {
 };
 
 export const updateRating = async (req, res, next) => {
-	const { id, course, user, upvote, downvote } = req.params;
-	const question = await Question.find({ _id: id, course, user });
-	if (!question) {
+	const { id, upvote, downvote } = req.body;
+	const question = await Question.find({ _id: id });
+	if (question.length === 0) {
 		throw new ExpressError("Question not found", 404);
 	}
 	await question.updateOne({ upvote, downvote });
 	await question.save();
-	res.status(200).json({ status: 200, message: "Question rating updated", data: question });
+	res.status(200).json({ status: 200, message: "Question rating updated", data: question[0] });
 };
 
 export const updateQuestion = async (req, res, next) => {
-	const { id, title, content, course, user } = req.body;
-	const question = await Question.find({ _id: id, course, user });
-	if (!question) {
+	const { id, title, content } = req.body;
+	const question = await Question.find({ _id: id });
+	if (question.length === 0) {
 		throw new ExpressError("Question not found", 404);
 	}
 	await question.updateOne({ title, content });
 	await question.save();
-	res.status(200).json({ status: 200, message: "Question updated", data: question });
+	res.status(200).json({ status: 200, message: "Question updated", data: question[0] });
 };
 
 export const deleteQuestion = async (req, res, next) => {
-	const { id, user } = req.body;
-	const question = await Question.find({ _id: id, user });
-	if (!question) {
+	const { id } = req.body;
+	const question = await Question.find({ _id: id });
+	if (question.length === 0) {
 		throw new ExpressError("Question not found", 404);
 	}
 	await question.findByIdAndDelete(id);
-	res.status(200).json({ status: 200, message: "Question updated", data: question });
+	res.status(200).json({ status: 200, message: "Question updated", data: question[0] });
 };
