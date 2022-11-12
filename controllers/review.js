@@ -26,8 +26,8 @@ export const createReview = async (req, res, next) => {
 };
 
 export const readReview = async (req, res, next) => {
-	const { id } = req.body;
-	const review = await Review.findById(id);
+	const { reviewId } = req.params;
+	const review = await Review.findById(reviewId);
 	if (!review) {
 		throw new ExpressError("Review not found", 404);
 	}

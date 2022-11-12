@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
 		},
 		courseTaken: [
 			{
-				type: Schema.Types.ObjectId,
+				type: mongoose.Schema.Types.ObjectId,
 				ref: "Course",
 			},
 		],
