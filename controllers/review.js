@@ -7,7 +7,7 @@ import { ExpressError } from "../utils/index.js";
 export const getReviewsByCourse = async (req, res, next) => {
 	const { course } = req.query;
 	const reviews = await Review.find({ course });
-	res.status(200).json({ status: 200, message: "", data: reviews });
+	res.status(200).json({ status: 200, message: "", data: reviews || [] });
 };
 
 export const createReview = async (req, res, next) => {
@@ -56,31 +56,31 @@ export const updateRating = async (req, res, next) => {
 	const { id, course, user, difficultyRating, timeSpentRating, funRating, recommendRating } =
 		req.params;
 	const review = await Review.find({ _id: id, course, user });
-	if (!review) {
+	if (review.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
 	await review.updateOne({ difficultyRating, timeSpentRating, funRating, recommendRating });
 	await review.save();
-	res.status(200).json({ status: 200, message: "Review rating updated", data: review });
+	res.status(200).json({ status: 200, message: "Review rating updated", data: review[0] });
 };
 
 export const updateReview = async (req, res, next) => {
 	const { id, title, content, course, user } = req.body;
 	const review = await Review.find({ _id: id, course, user });
-	if (!review) {
+	if (review.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
 	await review.updateOne({ title, content });
 	await review.save();
-	res.status(200).json({ status: 200, message: "Review updated", data: review });
+	res.status(200).json({ status: 200, message: "Review updated", data: review[0] });
 };
 
 export const deleteReview = async (req, res, next) => {
 	const { id, user } = req.body;
 	const review = await Review.find({ _id: id, user });
-	if (!review) {
+	if (review.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
 	await review.findByIdAndDelete(id);
-	res.status(200).json({ status: 200, message: "Review updated", data: review });
+	res.status(200).json({ status: 200, message: "Review updated", data: review[0] });
 };
