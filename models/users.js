@@ -12,6 +12,14 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			unique: true,
 		},
+		major: {
+			type: String,
+			required: true,
+		},
+		numberAnswer: {
+			type: Number,
+			default: 0,
+		},
 		courseTaken: [
 			{
 				type: Schema.Types.ObjectId,
