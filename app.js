@@ -1,8 +1,11 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import bodyParser from "body-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+
+import { ExpressError } from "./utils/index.js";
+
 const app = express();
 
 dotenv.config();
@@ -14,12 +17,21 @@ mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Database connected");
+	console.log("Database connected");
 });
 
-//bodyParser supports req.body 
+//bodyParser supports req.body
 app.use(bodyParser.json());
 // app.use(express.static(path.join(__dirname, 'build')));
 app.use(cors());
 
+app.all("*", (req, res, next) => {
+	next(new ExpressError("Page not found", 404));
+});
 
+app.use((err, req, res, next) => {
+	const { statusCode = 500 } = err;
+	if (!err.message) err.message = "Something went wrong!";
+	res.status(statusCode);
+	res.json({ status: statusCode, message: err.message });
+});
