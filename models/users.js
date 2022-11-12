@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 const userSchema = new mongoose.Schema(
 	{
 		username: {
@@ -16,7 +15,11 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		numberAnswer: {
+		upvote: {
+			type: Number,
+			default: 0,
+		},
+		downvote: {
 			type: Number,
 			default: 0,
 		},

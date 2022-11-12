@@ -18,6 +18,14 @@ const answerSchema = new mongoose.Schema(
 			type: Schema.Types.ObjectId,
 			ref: "Question",
 		},
+		upvote: {
+			type: Number,
+			default: 0,
+		},
+		downvote: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		timestamps: true,
