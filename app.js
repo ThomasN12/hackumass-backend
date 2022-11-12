@@ -8,6 +8,7 @@ import { ExpressError } from "./utils/index.js";
 
 import AuthRouter from "./routers/auth.js";
 import CourseRouter from "./routers/course.js";
+import QuestionRouter from "./routers/question.js";
 import ReviewRouter from "./routers/review.js";
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(cors());
 
 app.use("/api/course", CourseRouter);
 app.use("/api/review", ReviewRouter);
+app.use("/api/question", QuestionRouter);
 app.use("/api/auth", AuthRouter);
 
 app.all("*", (req, res, next) => {

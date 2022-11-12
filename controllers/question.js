@@ -4,6 +4,12 @@ import User from "../models/users.js";
 
 import { ExpressError } from "../utils/index.js";
 
+export const getQuestionsByCourse = async (req, res, next) => {
+	const { course } = req.query;
+	const questions = await Question.find({ course });
+	res.status(200).json({ status: 200, message: "", data: questions });
+};
+
 export const createQuestion = async (req, res, next) => {
 	const { title, content, course, user } = req.body;
 	const foundUser = await User.findById(user);
@@ -20,36 +26,39 @@ export const createQuestion = async (req, res, next) => {
 };
 
 export const readQuestion = async (req, res, next) => {
-	const { id } = req.body;
-	const question = await Question.findById(id);
+	const { questionId } = req.params;
+	const question = await Question.findById(questionId);
 	if (!question) {
 		throw new ExpressError("Question not found", 404);
 	}
 	res.status(200).json({ status: 200, message: "", data: question });
 };
 
-export const updateQuestion = async (req, res, next) => {
-	const { id, title, content, course, user } = req.body;
-	const foundUser = await User.findById(user);
-	if (!foundUser) {
-		throw new ExpressError("User not found", 404);
-	}
-	const foundCourse = await Course.findById(course);
-	if (!foundCourse) {
-		throw new ExpressError("Course not found", 404);
-	}
-	const question = await Question.findById(id);
+export const updateRating = async (req, res, next) => {
+	const { id, course, user, upvote, downvote } = req.params;
+	const question = await Question.find({ _id: id, course, user });
 	if (!question) {
 		throw new ExpressError("Question not found", 404);
 	}
-	await question.updateOne({ title, content, course, user });
+	await question.updateOne({ upvote, downvote });
+	await question.save();
+	res.status(200).json({ status: 200, message: "Question rating updated", data: question });
+};
+
+export const updateQuestion = async (req, res, next) => {
+	const { id, title, content, course, user } = req.body;
+	const question = await Question.find({ _id: id, course, user });
+	if (!question) {
+		throw new ExpressError("Question not found", 404);
+	}
+	await question.updateOne({ title, content });
 	await question.save();
 	res.status(200).json({ status: 200, message: "Question updated", data: question });
 };
 
 export const deleteQuestion = async (req, res, next) => {
-	const { id } = req.body;
-	const question = await Question.findById(id);
+	const { id, user } = req.body;
+	const question = await Question.find({ _id: id, user });
 	if (!question) {
 		throw new ExpressError("Question not found", 404);
 	}

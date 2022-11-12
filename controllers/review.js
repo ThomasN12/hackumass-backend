@@ -6,7 +6,7 @@ import { ExpressError } from "../utils/index.js";
 
 export const getReviewsByCourse = async (req, res, next) => {
 	const { course } = req.query;
-	const reviews = await Review.find({ course: course });
+	const reviews = await Review.find({ course });
 	res.status(200).json({ status: 200, message: "", data: reviews });
 };
 
@@ -51,14 +51,14 @@ export const updateReview = async (req, res, next) => {
 	if (!review) {
 		throw new ExpressError("Review not found", 404);
 	}
-	await review.updateOne({ title, content, course, user });
+	await review.updateOne({ title, content });
 	await review.save();
 	res.status(200).json({ status: 200, message: "Review updated", data: review });
 };
 
 export const deleteReview = async (req, res, next) => {
-	const { id } = req.body;
-	const review = await Review.findById(id);
+	const { id, user } = req.body;
+	const review = await Review.find({ _id: id, user });
 	if (!review) {
 		throw new ExpressError("Review not found", 404);
 	}
