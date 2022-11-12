@@ -10,7 +10,7 @@ export const createCourse = async (req, res, next) => {
 };
 
 export const readCourse = async (req, res, next) => {
-	const { id } = req.body;
+	const { id } = req.params;
 	const course = await Course.findById(id);
 	if (!course) {
 		throw new ExpressError("Course not found", 404);
