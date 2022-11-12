@@ -6,21 +6,23 @@ import {
 	deleteQuestion,
 	getQuestionsByCourse,
 	readQuestion,
-	updateRating,
 	updateQuestion,
+	updateRating,
 } from "../controllers/question.js";
+import authenticateToken from "../middlewares/authenticateToken.js";
+import { isQuestionAuthor } from "../middlewares/isAuthor.js";
 import { wrapAsync } from "../utils/index.js";
 
 router.get("/", wrapAsync(getQuestionsByCourse));
 
 router.get("/:questionId", wrapAsync(readQuestion));
 
-router.post("/", wrapAsync(createQuestion));
+router.post("/", authenticateToken, wrapAsync(createQuestion));
 
-router.put("/rating", wrapAsync(updateRating));
+router.put("/rating", authenticateToken, wrapAsync(updateRating));
 
-router.put("/", wrapAsync(updateQuestion));
+router.put("/", authenticateToken, isQuestionAuthor, wrapAsync(updateQuestion));
 
-router.delete("/", wrapAsync(deleteQuestion));
+router.delete("/", authenticateToken, isQuestionAuthor, wrapAsync(deleteQuestion));
 
 export default router;

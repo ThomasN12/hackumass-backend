@@ -9,18 +9,20 @@ import {
 	updateRating,
 	updateReview,
 } from "../controllers/review.js";
+import authenticateToken from "../middlewares/authenticateToken.js";
+import { isReviewAuthor } from "../middlewares/isAuthor.js";
 import { wrapAsync } from "../utils/index.js";
 
 router.get("/", wrapAsync(getReviewsByCourse));
 
 router.get("/:reviewId", wrapAsync(readReview));
 
-router.post("/", wrapAsync(createReview));
+router.post("/", authenticateToken, wrapAsync(createReview));
 
-router.put("/rating", wrapAsync(updateRating));
+router.put("/rating", authenticateToken, wrapAsync(updateRating));
 
-router.put("/", wrapAsync(updateReview));
+router.put("/", authenticateToken, isReviewAuthor, wrapAsync(updateReview));
 
-router.delete("/", wrapAsync(deleteReview));
+router.delete("/", authenticateToken, isReviewAuthor, wrapAsync(deleteReview));
 
 export default router;
