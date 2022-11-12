@@ -1,43 +1,45 @@
 import mongoose from "mongoose";
 import Answer from "./answer.js";
+import User from "./users.js";
 
 const questionSchema = new mongoose.Schema(
 	{
-		title: {
+		text: {
 			type: String,
 			required: true,
-		},
-		content: {
-			type: String,
-			required: true,
-		},
-		course: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Course",
 		},
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 		},
-		answer: [
+		replies: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "Answer",
 			},
 		],
-		upvote: {
-			type: Number,
-			default: 0,
-		},
-		downvote: {
-			type: Number,
-			default: 0,
-		},
 	},
 	{
 		timestamps: true,
+		toObject: { virtuals: true },
+		toJSON: { virtuals: true },
 	}
 );
+
+questionSchema.virtual("comId").get(function () {
+	return this._id;
+});
+
+questionSchema.virtual("userId").get(function () {
+	return this.user;
+});
+
+// questionSchema.virtual("fullName").get(function () {
+// 	const foundUser = User.findById(this.user, function (err, user) {
+
+// 	});
+
+// });
 
 questionSchema.post("findOneAndDelete", async function (doc) {
 	if (doc) {
