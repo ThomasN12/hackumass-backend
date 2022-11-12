@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Answer from "./answer.js";
 
 const questionSchema = new mongoose.Schema(
 	{
@@ -29,5 +30,13 @@ const questionSchema = new mongoose.Schema(
 		timestamps: true,
 	}
 );
+
+questionSchema.post("findOneAndDelete", async function (doc) {
+	if (doc) {
+		await Answer.deleteMany({
+			_id: doc.answers,
+		});
+	}
+});
 
 export default mongoose.model("Question", questionSchema);
