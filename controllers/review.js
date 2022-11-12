@@ -11,7 +11,16 @@ export const getReviewsByCourse = async (req, res, next) => {
 };
 
 export const createReview = async (req, res, next) => {
-	const { title, content, course, user } = req.body;
+	const {
+		title,
+		content,
+		course,
+		user,
+		difficultyRating,
+		timeSpentRating,
+		funRating,
+		recommendRating,
+	} = req.body;
 	const foundUser = await User.findById(user);
 	if (!foundUser) {
 		throw new ExpressError("User not found", 404);
@@ -20,7 +29,16 @@ export const createReview = async (req, res, next) => {
 	if (!foundCourse) {
 		throw new ExpressError("Course not found", 404);
 	}
-	const review = new Review({ title, content, course, user });
+	const review = new Review({
+		title,
+		content,
+		course,
+		user,
+		difficultyRating,
+		timeSpentRating,
+		funRating,
+		recommendRating,
+	});
 	await review.save();
 	res.status(200).json({ status: 200, message: "Review created", data: review });
 };
@@ -35,12 +53,13 @@ export const readReview = async (req, res, next) => {
 };
 
 export const updateRating = async (req, res, next) => {
-	const { id, course, user, upvote, downvote } = req.params;
+	const { id, course, user, difficultyRating, timeSpentRating, funRating, recommendRating } =
+		req.params;
 	const review = await Review.find({ _id: id, course, user });
 	if (!review) {
 		throw new ExpressError("Review not found", 404);
 	}
-	await review.updateOne({ upvote, downvote });
+	await review.updateOne({ difficultyRating, timeSpentRating, funRating, recommendRating });
 	await review.save();
 	res.status(200).json({ status: 200, message: "Review rating updated", data: review });
 };
