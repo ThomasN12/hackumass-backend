@@ -53,9 +53,9 @@ export const readReview = async (req, res, next) => {
 };
 
 export const updateRating = async (req, res, next) => {
-	const { id, course, user, difficultyRating, timeSpentRating, funRating, recommendRating } =
-		req.params;
-	const review = await Review.find({ _id: id, course, user });
+	const { id, difficultyRating, timeSpentRating, funRating, recommendRating } =
+		req.body;
+	const review = await Review.find({ _id: id });
 	if (review.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
@@ -65,8 +65,8 @@ export const updateRating = async (req, res, next) => {
 };
 
 export const updateReview = async (req, res, next) => {
-	const { id, title, content, course, user } = req.body;
-	const review = await Review.find({ _id: id, course, user });
+	const { id, title, content } = req.body;
+	const review = await Review.find({ _id: id });
 	if (review.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
@@ -76,8 +76,8 @@ export const updateReview = async (req, res, next) => {
 };
 
 export const deleteReview = async (req, res, next) => {
-	const { id, user } = req.body;
-	const review = await Review.find({ _id: id, user });
+	const { id } = req.body;
+	const review = await Review.find({ _id: id });
 	if (review.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}

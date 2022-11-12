@@ -35,8 +35,8 @@ export const readQuestion = async (req, res, next) => {
 };
 
 export const updateRating = async (req, res, next) => {
-	const { id, course, user, upvote, downvote } = req.params;
-	const question = await Question.find({ _id: id, course, user });
+	const { id, upvote, downvote } = req.body;
+	const question = await Question.find({ _id: id });
 	if (question.length === 0) {
 		throw new ExpressError("Question not found", 404);
 	}
@@ -46,8 +46,8 @@ export const updateRating = async (req, res, next) => {
 };
 
 export const updateQuestion = async (req, res, next) => {
-	const { id, title, content, course, user } = req.body;
-	const question = await Question.find({ _id: id, course, user });
+	const { id, title, content } = req.body;
+	const question = await Question.find({ _id: id });
 	if (question.length === 0) {
 		throw new ExpressError("Question not found", 404);
 	}
@@ -57,8 +57,8 @@ export const updateQuestion = async (req, res, next) => {
 };
 
 export const deleteQuestion = async (req, res, next) => {
-	const { id, user } = req.body;
-	const question = await Question.find({ _id: id, user });
+	const { id } = req.body;
+	const question = await Question.find({ _id: id });
 	if (question.length === 0) {
 		throw new ExpressError("Question not found", 404);
 	}

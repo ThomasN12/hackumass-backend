@@ -27,7 +27,7 @@ export const createAnswer = async (req, res, next) => {
 export const getAnswersByQuestion = async (req, res, next) => {
 	const { question } = req.query;
 	const answers = await Answer.find({ question });
-	res.status(200).json({ status: 200, message: "", data: answers || []});
+	res.status(200).json({ status: 200, message: "", data: answers || [] });
 };
 
 export const readAnswer = async (req, res, next) => {
@@ -40,8 +40,8 @@ export const readAnswer = async (req, res, next) => {
 };
 
 export const updateRating = async (req, res, next) => {
-	const { id, question, user, upvote, downvote } = req.params;
-	const answer = await Answer.find({ _id: id, question, user });
+	const { id, upvote, downvote } = req.body;
+	const answer = await Answer.find({ _id: id });
 	if (answer.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
@@ -51,8 +51,8 @@ export const updateRating = async (req, res, next) => {
 };
 
 export const updateAnswer = async (req, res, next) => {
-	const { id, content, user, question } = req.body;
-	const answer = await Answer.find({ _id: id, user, question });
+	const { id, content } = req.body;
+	const answer = await Answer.find({ _id: id });
 	if (answer.length === 0) {
 		throw new ExpressError("Answer not found", 404);
 	}
@@ -68,5 +68,5 @@ export const deleteAnswer = async (req, res, next) => {
 		throw new ExpressError("Answer not found", 404);
 	}
 	await answer.findByIdAndDelete(id);
-	res.status(200).json({ status: 200, message: "Answer deleted", data: answer[0] });
+	res.status(200).json({ status: 200, message: "Answer deleted", data: answer});
 };
