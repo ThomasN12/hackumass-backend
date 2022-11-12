@@ -16,16 +16,12 @@ export const getQuestionsByCourse = async (req, res, next) => {
 };
 
 export const createQuestion = async (req, res, next) => {
-	const { title, content, course, user } = req.body;
+	const { text, user } = req.body;
 	const foundUser = await User.findById(user);
 	if (!foundUser) {
 		throw new ExpressError("User not found", 404);
 	}
-	const foundCourse = await Course.findById(course);
-	if (!foundCourse) {
-		throw new ExpressError("Course not found", 404);
-	}
-	const question = new Question({ title, content, course, user });
+	const question = new Question({ text, user });
 	await question.save();
 	res.status(200).json({ status: 200, message: "Question created", data: question });
 };
