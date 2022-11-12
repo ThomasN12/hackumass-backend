@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Comment from "./comment.js";
+import Comment from "./answer.js";
 
 const reviewSchema = new mongoose.Schema(
 	{
@@ -19,12 +19,12 @@ const reviewSchema = new mongoose.Schema(
 			type: Schema.Types.ObjectId,
 			ref: "User",
 		},
-		comments: [
-			{
-				type: Schema.Types.ObjectId,
-				ref: "Comment",
-			},
-		],
+		// comments: [
+		// 	{
+		// 		type: Schema.Types.ObjectId,
+		// 		ref: "Comment",
+		// 	},
+		// ],
 		upvote: {
 			type: Number,
 			default: 0,
@@ -39,12 +39,12 @@ const reviewSchema = new mongoose.Schema(
 	}
 );
 
-reviewSchema.post("findOneAndDelete", async function (doc) {
-	if (doc) {
-		await Comment.deleteMany({
-			_id: doc.comments,
-		});
-	}
-});
+// reviewSchema.post("findOneAndDelete", async function (doc) {
+// 	if (doc) {
+// 		await Comment.deleteMany({
+// 			_id: doc.comments,
+// 		});
+// 	}
+// });
 
 export default mongoose.model("Review", reviewSchema);

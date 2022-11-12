@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
-const commentSchema = new mongoose.Schema(
+const questionSchema = new mongoose.Schema(
 	{
+		title: {
+			type: String,
+			required: true,
+		},
 		content: {
 			type: String,
 			required: true,
@@ -14,14 +18,16 @@ const commentSchema = new mongoose.Schema(
 			type: Schema.Types.ObjectId,
 			ref: "User",
 		},
-		review: {
-			type: Schema.Types.ObjectId,
-			ref: "Review",
-		},
+		answer: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "Answer",
+			},
+		],
 	},
 	{
 		timestamps: true,
 	}
 );
 
-export default mongoose.model("Comment", commentSchema);
+export default mongoose.model("Question", questionSchema);
