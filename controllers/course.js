@@ -18,6 +18,11 @@ export const readCourse = async (req, res, next) => {
 	res.status(200).json({ status: 200, message: "", data: course });
 };
 
+export const readAllCourses = async (req, res, next) => {
+	const courses = await Course.find({});
+	res.status(200).json({ status: 200, message: "", data: courses });
+};
+
 export const updateCourse = async (req, res, next) => {
 	const { id, fullName, codeName, major } = req.body;
 	const course = await Course.findById(id);
