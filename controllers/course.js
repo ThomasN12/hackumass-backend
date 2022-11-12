@@ -4,14 +4,19 @@ import { ExpressError } from "../utils/index.js";
 
 export const createCourse = async (req, res, next) => {
 	const { fullName, codeName, major, description } = req.body;
-	const course = new Course({ fullName, codeName, major, description });
+	const course = new Course({
+		fullName: fullName.toLowerCase(),
+		codeName: codeName.toLowerCase(),
+		major: major.toLowerCase(),
+		description,
+	});
 	await course.save();
 	res.status(200).json({ status: 200, message: "Course created", data: course });
 };
 
 export const readCourse = async (req, res, next) => {
-	const { id } = req.params;
-	const course = await Course.findById(id);
+	const { codeName } = req.params;
+	const course = await Course.find({ codeName });
 	if (!course) {
 		throw new ExpressError("Course not found", 404);
 	}
@@ -24,22 +29,27 @@ export const readAllCourses = async (req, res, next) => {
 };
 
 export const updateCourse = async (req, res, next) => {
-	const { id, fullName, codeName, major, description } = req.body;
-	const course = await Course.findById(id);
+	const { fullName, codeName, major, description } = req.body;
+	const course = await Course.find({ codeName: codeName.toLowerCase() });
 	if (!course) {
 		throw new ExpressError("Course not found", 404);
 	}
-	await course.updateOne({ fullName, codeName, major, description });
+	await course.updateOne({
+		fullName: fullName.toLowerCase(),
+		codeName: codeName.toLowerCase(),
+		major: major.toLowerCase(),
+		description,
+	});
 	await course.save();
 	res.status(200).json({ status: 200, message: "Course updated", data: course });
 };
 
 export const deleteCourse = async (req, res, next) => {
-	const { id } = req.body;
-	const course = await Course.findById(id);
+	const { codeName } = req.body;
+	const course = await Course.find({ codeName: codeName.toLowerCase() });
 	if (!course) {
 		throw new ExpressError("Course not found", 404);
 	}
-	await course.findByIdAndDelete(id);
+	await Course.deleteOne({ codeName: codeName.toLowerCase() });
 	res.status(200).json({ status: 200, message: "Course updated", data: course });
 };
