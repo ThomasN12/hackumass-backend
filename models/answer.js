@@ -1,22 +1,22 @@
 import mongoose from "mongoose";
 
-const reviewSchema = new mongoose.Schema(
+const answerSchema = new mongoose.Schema(
 	{
-		title: {
-			type: String,
-			required: true,
-		},
 		content: {
 			type: String,
 			required: true,
 		},
-		course: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Course",
-		},
+		// course: {
+		// 	type: mongoose.Schema.Types.ObjectId,
+		// 	ref: "Course",
+		// },
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
+		},
+		question: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Question",
 		},
 		upvote: {
 			type: Number,
@@ -32,4 +32,4 @@ const reviewSchema = new mongoose.Schema(
 	}
 );
 
-export default mongoose.model("Review", reviewSchema);
+export default mongoose.model("Answer", answerSchema);

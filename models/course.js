@@ -16,6 +16,10 @@ const courseSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		rating: {
+			type: Number,
+		},
+		description: String,
 	},
 	{
 		timestamps: true,

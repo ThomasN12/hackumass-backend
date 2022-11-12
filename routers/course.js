@@ -12,7 +12,7 @@ import { wrapAsync } from "../utils/index.js";
 
 router.get("/all", wrapAsync(readAllCourses));
 
-router.get("/:id", wrapAsync(readCourse));
+router.get("/:codeName", wrapAsync(readCourse));
 
 router.post("/", wrapAsync(createCourse));
 

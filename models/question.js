@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const reviewSchema = new mongoose.Schema(
+const questionSchema = new mongoose.Schema(
 	{
 		title: {
 			type: String,
@@ -18,6 +18,12 @@ const reviewSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 		},
+		answer: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Answer",
+			},
+		],
 		upvote: {
 			type: Number,
 			default: 0,
@@ -32,4 +38,4 @@ const reviewSchema = new mongoose.Schema(
 	}
 );
 
-export default mongoose.model("Review", reviewSchema);
+export default mongoose.model("Question", questionSchema);
