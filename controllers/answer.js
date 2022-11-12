@@ -6,33 +6,35 @@ import User from "../models/users.js";
 import { ExpressError } from "../utils/index.js";
 
 export const createAnswer = async (req, res, next) => {
-	const { content, course, user, question } = req.body;
+	const { text, user, question } = req.body;
 	const foundUser = await User.findById(user);
 	if (!foundUser) {
 		throw new ExpressError("User not found", 404);
-	}
-	const foundCourse = await Course.findById(course);
-	if (!foundCourse) {
-		throw new ExpressError("Course not found", 404);
 	}
 	const foundQuestion = await Question.findById(question);
 	if (!foundQuestion) {
 		throw new ExpressError("Question not found", 404);
 	}
-	const answer = new Answer({ content, course, user, question });
+	const answer = new Answer({ text, user, question });
 	await answer.save();
 	res.status(200).json({ status: 200, message: "Answer created", data: answer });
 };
 
 export const getAnswersByQuestion = async (req, res, next) => {
 	const { question } = req.query;
-	const answers = await Answer.find({ question });
+	const answers = await Answer.find({ question }).populate({
+		path: "user",
+		select: ["email", "fullName"],
+	});
 	res.status(200).json({ status: 200, message: "", data: answers || [] });
 };
 
 export const readAnswer = async (req, res, next) => {
 	const { id } = req.body;
-	const answer = await Answer.findById(id);
+	const answer = await Answer.findById(id).populate({
+		path: "user",
+		select: ["email", "fullName"],
+	});
 	if (!answer) {
 		throw new ExpressError("Answer not found", 404);
 	}
@@ -41,7 +43,10 @@ export const readAnswer = async (req, res, next) => {
 
 export const updateRating = async (req, res, next) => {
 	const { id, upvote, downvote } = req.body;
-	const answer = await Answer.find({ _id: id });
+	const answer = await Answer.find({ _id: id }).populate({
+		path: "user",
+		select: ["email", "fullName"],
+	});
 	if (answer.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
@@ -52,7 +57,10 @@ export const updateRating = async (req, res, next) => {
 
 export const updateAnswer = async (req, res, next) => {
 	const { id, content } = req.body;
-	const answer = await Answer.find({ _id: id });
+	const answer = await Answer.find({ _id: id }).populate({
+		path: "user",
+		select: ["email", "fullName"],
+	});
 	if (answer.length === 0) {
 		throw new ExpressError("Answer not found", 404);
 	}
@@ -63,10 +71,13 @@ export const updateAnswer = async (req, res, next) => {
 
 export const deleteAnswer = async (req, res, next) => {
 	const { id } = req.body;
-	const answer = await Answer.findById(id);
+	const answer = await Answer.findById(id).populate({
+		path: "user",
+		select: ["email", "fullName"],
+	});
 	if (answer.length === 0) {
 		throw new ExpressError("Answer not found", 404);
 	}
 	await answer.findByIdAndDelete(id);
-	res.status(200).json({ status: 200, message: "Answer deleted", data: answer});
+	res.status(200).json({ status: 200, message: "Answer deleted", data: answer });
 };

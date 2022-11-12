@@ -1,10 +1,13 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
 	{
-		username: {
+		firstName: {
 			type: String,
 			required: true,
-			unique: true,
+		},
+		lastName: {
+			type: String,
+			required: true,
 		},
 		email: {
 			type: String,
@@ -34,5 +37,9 @@ const userSchema = new mongoose.Schema(
 		timestamps: true,
 	}
 );
+
+userSchema.virtual("fullName", function () {
+	return this.firstName + " " + this.lastName;
+});
 
 export default mongoose.model("User", userSchema);

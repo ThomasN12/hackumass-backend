@@ -16,7 +16,12 @@ export const createCourse = async (req, res, next) => {
 
 export const readCourse = async (req, res, next) => {
 	const { codeName } = req.params;
-	const course = await Course.find({ codeName });
+	const course = await Course.find({ codeName }).populate({
+		path: 'questions',
+		populate: {
+			path: 'replies'
+		}
+	}).populate('questions');
 	if (course.length === 0) {
 		throw new ExpressError("Course not found", 404);
 	}

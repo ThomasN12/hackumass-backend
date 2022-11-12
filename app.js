@@ -16,7 +16,7 @@ const app = express();
 
 dotenv.config();
 const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/hackumass-db";
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5002;
 
 // 'mongodb://localhost:27017/habits-tracker'
 mongoose.connect(dbUrl);
