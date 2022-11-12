@@ -2,14 +2,10 @@ import mongoose from "mongoose";
 
 const answerSchema = new mongoose.Schema(
 	{
-		content: {
+		text: {
 			type: String,
 			required: true,
 		},
-		// course: {
-		// 	type: mongoose.Schema.Types.ObjectId,
-		// 	ref: "Course",
-		// },
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
@@ -18,18 +14,19 @@ const answerSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Question",
 		},
-		upvote: {
-			type: Number,
-			default: 0,
-		},
-		downvote: {
-			type: Number,
-			default: 0,
-		},
 	},
 	{
 		timestamps: true,
+		toObject: { virtuals: true },
+		toJSON: { virtuals: true },
 	}
 );
+
+answerSchema.virtual("comId").get(function () {
+	return this._id;
+});
+answerSchema.virtual("userId").get(function () {
+	return this.user;
+});
 
 export default mongoose.model("Answer", answerSchema);
