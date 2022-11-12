@@ -16,7 +16,7 @@ export const createCourse = async (req, res, next) => {
 
 export const readCourse = async (req, res, next) => {
 	const { codeName } = req.params;
-	const course = await Course.find({ codeName });
+	const course = (await Course.find({ codeName }))[0];
 	if (!course) {
 		throw new ExpressError("Course not found", 404);
 	}
@@ -41,7 +41,7 @@ export const updateCourse = async (req, res, next) => {
 		description,
 	});
 	await course.save();
-	res.status(200).json({ status: 200, message: "Course updated", data: course });
+	res.status(200).json({ status: 200, message: "Course updated", data: course[0] });
 };
 
 export const deleteCourse = async (req, res, next) => {
