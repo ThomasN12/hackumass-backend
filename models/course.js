@@ -19,6 +19,12 @@ const courseSchema = new mongoose.Schema(
 		rating: {
 			type: Number,
 		},
+		questions: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Question",
+			},
+		],
 		description: String,
 	},
 	{

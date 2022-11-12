@@ -6,8 +6,10 @@ import { ExpressError } from "../utils/index.js";
 
 export const getQuestionsByCourse = async (req, res, next) => {
 	const { course } = req.query;
-	const questions = await Question.find({ course })
-		.populate({ path: "user", select: ["email", "fullName"] })
+	const foundCourse = await Course.find({course})
+	// console.log(course)
+	const questions = await Question.find({ course: foundCourse })
+		.populate({ path: "user", select: ["email", "firstName", "lastName"] })
 		.populate({
 			path: "replies",
 			populate: { path: "user", select: ["email", "fullName"] },
@@ -16,13 +18,22 @@ export const getQuestionsByCourse = async (req, res, next) => {
 };
 
 export const createQuestion = async (req, res, next) => {
-	const { text, user } = req.body;
+	const { text, course } = req.body;
+	const user = req.user;
 	const foundUser = await User.findById(user);
+	const foundCourse = await Course.findOne({ codeName: course });
+	console.log(foundCourse);
 	if (!foundUser) {
 		throw new ExpressError("User not found", 404);
 	}
-	const question = new Question({ text, user });
+	if (!foundCourse)
+	{
+		throw new ExpressError("Course not found", 404);
+	}
+	const question = new Question({ text, user, course: foundCourse });
 	await question.save();
+	foundCourse.questions.push(question)
+	await foundCourse.save()
 	res.status(200).json({ status: 200, message: "Question created", data: question });
 };
 

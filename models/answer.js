@@ -22,11 +22,11 @@ const answerSchema = new mongoose.Schema(
 	}
 );
 
-answerSchema.virtual("comId").get(function () {
-	return this._id;
-});
-answerSchema.virtual("userId").get(function () {
-	return this.user;
-});
+// answerSchema.virtual("comId").get(function () {
+// 	return this._id;
+// });
+// answerSchema.virtual("userId").get(function () {
+// 	return this.user;
+// });
 
 export default mongoose.model("Answer", answerSchema);

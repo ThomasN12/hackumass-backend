@@ -12,6 +12,10 @@ const questionSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 		},
+		course: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Course",
+		},
 		replies: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
@@ -30,9 +34,9 @@ questionSchema.virtual("comId").get(function () {
 	return this._id;
 });
 
-questionSchema.virtual("userId").get(function () {
-	return this.user;
-});
+// questionSchema.virtual("userId").get(function () {
+// 	return this.user.toString();
+// });
 
 // questionSchema.virtual("fullName").get(function () {
 // 	const foundUser = User.findById(this.user, function (err, user) {

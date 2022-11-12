@@ -13,8 +13,7 @@ export const googleLoginUser = async (req, res) => {
         const { idToken } = req.body;
         const data = await client.verifyIdToken({ idToken: idToken, audience: "868855841872-sc6bivb284l92isq1r9cude5fqhkt149.apps.googleusercontent.com" });
         const payload = data.payload;
-        console.log(payload);
-        const { email_verified, email, given_name } = payload;
+        const { email_verified, email, given_name, family_name } = payload;
         if (email_verified)
         {
             const foundUser = await User.findOne({ email: email });
@@ -31,7 +30,8 @@ export const googleLoginUser = async (req, res) => {
             {
                 //Create new user
                 let newUser = new User({
-                    username: given_name,
+                    firstName: given_name,
+                    lastName: family_name,
                     email: email,
                     major: "Computer Science",
                     courseTaken: [],
