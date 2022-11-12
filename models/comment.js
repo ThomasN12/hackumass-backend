@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const answerSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema(
 	{
 		content: {
 			type: String,
@@ -24,4 +24,4 @@ const answerSchema = new mongoose.Schema(
 	}
 );
 
-export default mongoose.model("Question", answerSchema);
+export default mongoose.model("Comment", commentSchema);

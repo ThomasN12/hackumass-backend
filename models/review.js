@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Answer from "./answer.js";
+import Comment from "./comment.js";
 
-const questionSchema = new mongoose.Schema(
+const reviewSchema = new mongoose.Schema(
 	{
 		title: {
 			type: String,
@@ -19,24 +19,32 @@ const questionSchema = new mongoose.Schema(
 			type: Schema.Types.ObjectId,
 			ref: "User",
 		},
-		answers: [
+		comment: [
 			{
 				type: Schema.Types.ObjectId,
-				ref: "Answer",
+				ref: "Comment",
 			},
 		],
+		upvote: {
+			type: Number,
+			default: 0,
+		},
+		downvote: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		timestamps: true,
 	}
 );
 
-questionSchema.post("findOneAndDelete", async function (doc) {
+reviewSchema.post("findOneAndDelete", async function (doc) {
 	if (doc) {
-		await Answer.deleteMany({
+		await Comment.deleteMany({
 			_id: doc.answers,
 		});
 	}
 });
 
-export default mongoose.model("Question", questionSchema);
+export default mongoose.model("Review", reviewSchema);

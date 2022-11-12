@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 
 import { ExpressError } from "./utils/index.js";
 
+import CourseRouter from "./routers/course.js";
+
 const app = express();
 
 dotenv.config();
@@ -28,6 +30,8 @@ app.listen(PORT, () => {
 app.use(bodyParser.json());
 // app.use(express.static(path.join(__dirname, 'build')));
 app.use(cors());
+
+app.use("/api/course", CourseRouter);
 
 app.all("*", (req, res, next) => {
 	next(new ExpressError("Page not found", 404));

@@ -5,3 +5,9 @@ export class ExpressError extends Error {
 		this.statusCode = statusCode;
 	}
 }
+
+export const wrapAsync = (f) => {
+	return (req, res, next) => {
+		f(req, res, next).catch(next);
+	};
+};
