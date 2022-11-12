@@ -6,10 +6,10 @@ const answerSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		course: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Course",
-		},
+		// course: {
+		// 	type: mongoose.Schema.Types.ObjectId,
+		// 	ref: "Course",
+		// },
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",

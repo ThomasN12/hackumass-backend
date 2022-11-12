@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 import { ExpressError } from "./utils/index.js";
 
+import AnswerRouter from "./routers/answer.js";
 import AuthRouter from "./routers/auth.js";
 import CourseRouter from "./routers/course.js";
 import QuestionRouter from "./routers/question.js";
@@ -37,6 +38,7 @@ app.use(cors());
 app.use("/api/course", CourseRouter);
 app.use("/api/review", ReviewRouter);
 app.use("/api/question", QuestionRouter);
+app.use("/api/answer", AnswerRouter);
 app.use("/api/auth", AuthRouter);
 
 app.all("*", (req, res, next) => {

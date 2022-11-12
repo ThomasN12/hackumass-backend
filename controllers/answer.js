@@ -24,6 +24,12 @@ export const createAnswer = async (req, res, next) => {
 	res.status(200).json({ status: 200, message: "Answer created", data: answer });
 };
 
+export const getAnswersByQuestion = async (req, res, next) => {
+	const { question } = req.query;
+	const answers = await Answer.find({ question });
+	res.status(200).json({ status: 200, message: "", data: answers });
+};
+
 export const readAnswer = async (req, res, next) => {
 	const { id } = req.body;
 	const answer = await Answer.findById(id);
@@ -33,21 +39,20 @@ export const readAnswer = async (req, res, next) => {
 	res.status(200).json({ status: 200, message: "", data: answer });
 };
 
+export const updateRating = async (req, res, next) => {
+	const { id, question, user, upvote, downvote } = req.params;
+	const answer = await Answer.find({ _id: id, question, user });
+	if (!answer) {
+		throw new ExpressError("Review not found", 404);
+	}
+	await answer.updateOne({ upvote, downvote });
+	await answer.save();
+	res.status(200).json({ status: 200, message: "Answer rating updated", data: answer });
+};
+
 export const updateAnswer = async (req, res, next) => {
-	const { content, course, user, question } = req.body;
-	const foundUser = await User.findById(user);
-	if (!foundUser) {
-		throw new ExpressError("User not found", 404);
-	}
-	const foundCourse = await Course.findById(course);
-	if (!foundCourse) {
-		throw new ExpressError("Course not found", 404);
-	}
-	const foundQuestion = await Question.findById(question);
-	if (!foundQuestion) {
-		throw new ExpressError("Question not found", 404);
-	}
-	const answer = await Answer.findById(id);
+	const { id, content, user, question } = req.body;
+	const answer = await Answer.find({ _id: id, user, question });
 	if (!answer) {
 		throw new ExpressError("Answer not found", 404);
 	}
