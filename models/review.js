@@ -19,7 +19,7 @@ const reviewSchema = new mongoose.Schema(
 			type: Schema.Types.ObjectId,
 			ref: "User",
 		},
-		comment: [
+		comments: [
 			{
 				type: Schema.Types.ObjectId,
 				ref: "Comment",
@@ -42,7 +42,7 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.post("findOneAndDelete", async function (doc) {
 	if (doc) {
 		await Comment.deleteMany({
-			_id: doc.answers,
+			_id: doc.comments,
 		});
 	}
 });
