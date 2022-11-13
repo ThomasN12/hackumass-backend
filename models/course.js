@@ -5,7 +5,7 @@ const courseSchema = new mongoose.Schema(
 		fullName: {
 			type: String,
 			required: true,
-			unique: true,
+			// unique: true,
 		},
 		codeName: {
 			type: String,
