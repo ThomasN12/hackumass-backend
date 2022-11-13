@@ -1,7 +1,7 @@
 import { OAuth2Client } from 'google-auth-library';
 import User from "../models/users.js";
 import jwt from 'jsonwebtoken';
-const client = new OAuth2Client("868855841872-sc6bivb284l92isq1r9cude5fqhkt149.apps.googleusercontent.com");
+const client = new OAuth2Client(process.env.OATH_CLIENT_ID);
 
 const generateAccessToken = (user) => {
     return jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '7d' });
@@ -11,7 +11,7 @@ export const googleLoginUser = async (req, res) => {
     try
     {
         const { idToken } = req.body;
-        const data = await client.verifyIdToken({ idToken: idToken, audience: "868855841872-sc6bivb284l92isq1r9cude5fqhkt149.apps.googleusercontent.com" });
+        const data = await client.verifyIdToken({ idToken: idToken, audience: process.env.OATH_CLIENT_ID });
         const payload = data.payload;
         const { email_verified, email, given_name, family_name } = payload;
         if (email_verified)
@@ -63,7 +63,7 @@ export const googleLoginUser = async (req, res) => {
 }
 
 export const authTokenValidation = async (req, res) => {
-    console.log(req.user)
+    // console.log(req.user)
     const foundUser = await User.findById(req.user);
     res.status(200).json({
         status: 200, message: "Logged in successfully!", data: {
