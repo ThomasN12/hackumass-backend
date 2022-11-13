@@ -33,7 +33,8 @@ app.listen(PORT, () => {
 app.use(bodyParser.json());
 // app.use(express.static(path.join(__dirname, 'build')));
 const corsOptions = {
-	origin: true,
+	// origin: true,
+	origin: ["https://coursesoutlook.netlify.app"]
 	credentials: true,            //access-control-allow-credentials:true
 	preflightContinue: true,
 	methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
