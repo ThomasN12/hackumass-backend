@@ -33,7 +33,7 @@ app.listen(PORT, () => {
 app.use(bodyParser.json());
 // app.use(express.static(path.join(__dirname, 'build')));
 const corsOptions = {
-	origin: '*',
+	origin: true,
 	credentials: true,            //access-control-allow-credentials:true
 	optionSuccessStatus: 200,
 }
