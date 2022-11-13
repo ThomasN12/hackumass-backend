@@ -2,8 +2,11 @@
 import mongoose from 'mongoose';
 import { courses } from './seedsHelper.js'
 import Course from '../models/course.js'
+const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/hackumass-db";
+// const dbUrl = process.env.DB_URL;
 
-mongoose.connect('mongodb://127.0.0.1:27017/hackumass-db');
+console.log(dbUrl)
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
