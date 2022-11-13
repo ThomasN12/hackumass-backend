@@ -14,7 +14,6 @@ const courseSchema = new mongoose.Schema(
 		},
 		major: {
 			type: String,
-			required: true,
 		},
 		rating: {
 			type: Number,
