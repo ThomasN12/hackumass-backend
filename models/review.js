@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
 	{
-		title: {
-			type: String,
-			required: true,
-		},
+		// title: {
+		// 	type: String,
+		// 	required: true,
+		// },
 		content: {
 			type: String,
 			required: true,
@@ -22,7 +22,11 @@ const reviewSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
-		timeSpentRating: {
+		// effortLevel: {
+		// 	type: Number,
+		// 	default: 0,
+		// },
+		starRating: {
 			type: Number,
 			default: 0,
 		},
@@ -34,6 +38,11 @@ const reviewSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
+		effortLevel: {
+			type: Number,
+			default: 0,
+		},
+
 	},
 	{
 		timestamps: true,

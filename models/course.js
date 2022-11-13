@@ -25,6 +25,12 @@ const courseSchema = new mongoose.Schema(
 				ref: "Question",
 			},
 		],
+		reviews: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Review",
+			},
+		],
 		description: String,
 	},
 	{

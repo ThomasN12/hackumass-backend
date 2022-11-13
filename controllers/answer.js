@@ -6,7 +6,7 @@ import User from "../models/users.js";
 import { ExpressError } from "../utils/index.js";
 
 export const createAnswer = async (req, res, next) => {
-	const { text, user, question } = req.body;
+	const { text, user, question, fullName, avatarUrl } = req.body;
 	const foundUser = await User.findById(user);
 	if (!foundUser) {
 		throw new ExpressError("User not found", 404);
@@ -15,8 +15,10 @@ export const createAnswer = async (req, res, next) => {
 	if (!foundQuestion) {
 		throw new ExpressError("Question not found", 404);
 	}
-	const answer = new Answer({ text, user, question });
+	const answer = new Answer({ text, user, question, fullName, avatarUrl });
+	foundQuestion.replies.push(answer)
 	await answer.save();
+	await foundQuestion.save()
 	res.status(200).json({ status: 200, message: "Answer created", data: answer });
 };
 

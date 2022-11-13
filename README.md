@@ -42,7 +42,7 @@ Get /api/review/<review_id>
 
 Post /api/review
 
-Body: {title, content, course, user, difficultyRating, timeSpentRating, funRating, recommendRating}
+Body: {title, content, course, user, difficultyRating, effortLevel, funRating, recommendRating}
 
 recommendRating: front page, scale 0-5, 5 is very much recommended
 difficultyRating: back page, scale 0-5, 5 is very difficult
@@ -53,7 +53,7 @@ funRating: back page, scale 0-5, 5 is very fun
 
 Put /api/review/rating
 
-Body: {id, difficultyRating, timeSpentRating, funRating, recommendRating}
+Body: {id, difficultyRating, effortLevel, funRating, recommendRating}
 
 ### Update review
 

@@ -6,6 +6,12 @@ const answerSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		fullName: {
+			type: String,
+		},
+		avatarUrl: {
+			type: String
+		},
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
