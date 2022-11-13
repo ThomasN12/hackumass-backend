@@ -14,6 +14,16 @@ export const googleLoginUser = async (req, res) => {
         const data = await client.verifyIdToken({ idToken: idToken, audience: process.env.OATH_CLIENT_ID });
         const payload = data.payload;
         const { email_verified, email, given_name, family_name } = payload;
+        // var myemail = 'test@yahoo.com'
+
+        if (!(/@umass.edu\s*$/.test(email)))
+        {
+            res.status(403).json({
+                status: 404, message: "Your email must be UMass Student email!"
+            })
+        }
+        console.log("it ends in @umass");
+
         if (email_verified)
         {
             const foundUser = await User.findOne({ email: email });
