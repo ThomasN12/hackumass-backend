@@ -35,6 +35,8 @@ app.use(bodyParser.json());
 const corsOptions = {
 	origin: true,
 	credentials: true,            //access-control-allow-credentials:true
+	preflightContinue: true,
+	methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 	optionSuccessStatus: 200,
 }
 app.use(cors(corsOptions));
