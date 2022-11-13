@@ -13,9 +13,11 @@ import authenticateToken from "../middlewares/authenticateToken.js";
 import { isReviewAuthor } from "../middlewares/isAuthor.js";
 import { wrapAsync } from "../utils/index.js";
 
-router.get("/", wrapAsync(getReviewsByCourse));
+// router.get("/:codeName", wrapAsync(getReviewsByCourse));
 
-router.get("/:reviewId", wrapAsync(readReview));
+router.get("/:codeName", wrapAsync(getReviewsByCourse));
+
+// router.get("/:reviewId", wrapAsync(readReview));
 
 router.post("/", authenticateToken, wrapAsync(createReview));
 

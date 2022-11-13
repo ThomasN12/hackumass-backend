@@ -1,47 +1,61 @@
 import Course from "../models/course.js";
+import review from "../models/review.js";
 import Review from "../models/review.js";
 import User from "../models/users.js";
 
 import { ExpressError } from "../utils/index.js";
 
 export const getReviewsByCourse = async (req, res, next) => {
-	const { course } = req.query;
-	const reviews = await Review.find({ course });
+	// console.log("HERE")
+	const { codeName } = req.params;
+	const foundCourse = await Course.findOne({ codeName }).populate("reviews").populate({
+		path: 'reviews',
+		populate: {
+			path: 'user'
+		}
+	});
+	const reviews = foundCourse.reviews;
+	console.log(foundCourse)
 	res.status(200).json({ status: 200, message: "", data: reviews || [] });
 };
 
 export const createReview = async (req, res, next) => {
 	const {
-		title,
+		// title,
 		content,
 		course,
 		user,
 		difficultyRating,
-		timeSpentRating,
+		effortLevel,
 		funRating,
 		recommendRating,
+		starRating,
 	} = req.body;
 	const foundUser = await User.findById(user);
 	if (!foundUser) {
 		throw new ExpressError("User not found", 404);
 	}
-	const foundCourse = await Course.findById(course);
+	const foundCourse = await Course.findOne({codeName: course});
 	if (!foundCourse) {
 		throw new ExpressError("Course not found", 404);
 	}
 	const review = new Review({
-		title,
 		content,
-		course,
+		course: foundCourse,
 		user,
 		difficultyRating,
-		timeSpentRating,
+		effortLevel,
 		funRating,
 		recommendRating,
+		starRating,
 	});
 	await review.save();
+	foundCourse.reviews.push(review);
+	await foundCourse.save();
 	res.status(200).json({ status: 200, message: "Review created", data: review });
 };
+
+
 
 export const readReview = async (req, res, next) => {
 	const { reviewId } = req.params;
@@ -53,13 +67,13 @@ export const readReview = async (req, res, next) => {
 };
 
 export const updateRating = async (req, res, next) => {
-	const { id, difficultyRating, timeSpentRating, funRating, recommendRating } =
+	const { id, difficultyRating, effortLevel, funRating, recommendRating } =
 		req.body;
 	const review = await Review.find({ _id: id });
 	if (review.length === 0) {
 		throw new ExpressError("Review not found", 404);
 	}
-	await review.updateOne({ difficultyRating, timeSpentRating, funRating, recommendRating });
+	await review.updateOne({ difficultyRating, effortLevel, funRating, recommendRating });
 	await review.save();
 	res.status(200).json({ status: 200, message: "Review rating updated", data: review[0] });
 };

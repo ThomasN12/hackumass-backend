@@ -25,6 +25,7 @@ export const googleLoginUser = async (req, res) => {
                 res.status(200).json({
                     status: 200, message: "Logged in successfully!", data: {
                         token: accessToken,
+                        user: foundUser
                 } });
             } else
             {
@@ -41,18 +42,32 @@ export const googleLoginUser = async (req, res) => {
                 res.status(200).json({
                     status: 200, message: "Logged in successfully!", data: {
                         token: accessToken,
+                        user: savedUser
                     }
                 });
             }
         } else
         {
-            res.send({
-                success: false,
-                message: "Email does not existed",
-            });
+            // res.send({
+            //     success: false,
+            //     message: "Email does not existed",
+            // });
+            res.status(404).json({
+                status: 404, message: "Email does not exist"
+            })
         }
     } catch (err)
     {
         console.log(err);
     }
+}
+
+export const authTokenValidation = async (req, res) => {
+    console.log(req.user)
+    const foundUser = await User.findById(req.user);
+    res.status(200).json({
+        status: 200, message: "Logged in successfully!", data: {
+            user: foundUser
+        }
+    });
 }

@@ -7,7 +7,6 @@ import { ExpressError } from "../utils/index.js";
 export const getQuestionsByCourse = async (req, res, next) => {
 	const { course } = req.query;
 	const foundCourse = await Course.find({course})
-	// console.log(course)
 	const questions = await Question.find({ course: foundCourse })
 		.populate({ path: "user", select: ["email", "firstName", "lastName"] })
 		.populate({
@@ -22,7 +21,6 @@ export const createQuestion = async (req, res, next) => {
 	const user = req.user;
 	const foundUser = await User.findById(user);
 	const foundCourse = await Course.findOne({ codeName: course });
-	console.log(foundCourse);
 	if (!foundUser) {
 		throw new ExpressError("User not found", 404);
 	}
