@@ -32,7 +32,12 @@ app.listen(PORT, () => {
 //bodyParser supports req.body
 app.use(bodyParser.json());
 // app.use(express.static(path.join(__dirname, 'build')));
-app.use(cors());
+const corsOptions = {
+	origin: '*',
+	credentials: true,            //access-control-allow-credentials:true
+	optionSuccessStatus: 200,
+}
+app.use(cors(corsOptions));
 
 app.use("/api/course", CourseRouter);
 app.use("/api/review", ReviewRouter);
